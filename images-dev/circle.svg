@@ -1,0 +1,3 @@
+<svg width="110" height="110" viewBox="0 0 110 110" style="background: lightblue">
+  <circle cx="55" cy="55" r="50" fill="yellow" stroke-width="2" stroke="red" stroke-dasharray="4"/>
+</svg>
