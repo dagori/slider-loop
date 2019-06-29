@@ -1,8 +1,62 @@
 body {
-  background: red;
-  background: rba(255, 255, 255);
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
-div {
-  background: orange;
+$colors: (
+  1: red,
+  2: blue,
+  3: pink,
+  4: orange,
+  5: darkblue,
+  6: yellowgreen
+);
+
+@each $item, $color in $colors {
+  .slider__slide--#{$item} {
+    background: $color;
+  }
+};
+
+$allWidth: 500px;
+$allHeight: 200px;
+$marginVertical: 20px;
+$sliderLength: 8;
+
+.slider {
+  width: $allWidth;
+  height: $allHeight;
+  margin: $marginVertical auto;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.slider__button {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  transform: translateY(-25px);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+  &--next {
+    order: 1;
+    right: 0;
+  }
+}
+
+.slider__container {
+  display: flex;
+  height: inherit;
+  box-sizing: border-box;
+  width: $allWidth * $sliderLength;
+}
+
+.slider__slide {
+  width: $allWidth;
+  text-align: center;
+  line-height: $allHeight;
 }

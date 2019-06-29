@@ -1,5 +1,6 @@
 'use strict';
 const { src, dest, series, parallel, watch } = require('gulp');
+const babel = require("gulp-babel");
 const cleanCSS = require('gulp-clean-css');
 const del = require('del');
 const sass = require('gulp-sass');
@@ -10,6 +11,7 @@ const rename = require('gulp-rename');
 const svgSprite = require('gulp-svg-sprite');
 const plumber = require('gulp-plumber');
 const uglify = require('gulp-uglify');
+const htmlmin = require('gulp-htmlmin');
 
 const config = {
   shape: {
@@ -32,6 +34,12 @@ const config = {
   }
 };
 
+// function html() {
+//   return src('*.html')
+//     .pipe(htmlmin({ collapseWhitespace: true }))
+//     .pipe(dest('build'))
+// }
+
 function sprites() {
   return src('images-dev/*.svg')
     .pipe(svgSprite(config))
@@ -39,7 +47,7 @@ function sprites() {
 }
 
 function styles() {
-  return src('scss/a-style.scss', { sourcemaps: true })
+  return src('scss/*.scss', { sourcemaps: true })
     .pipe(plumber())
     .pipe(sass().on('error', sass.logError))
     .pipe(autoprefixer({
@@ -57,8 +65,11 @@ function styles() {
 }
 
 function scripts() {
-  return src('js-dev/script.js', { sourcemaps: true })
-  .pipe(uglify())
+  return src('js/*.js', { sourcemaps: true })
+  .pipe(babel({
+    presets: ['@babel/env']
+  }))
+  //.pipe(uglify())
   .pipe(rename({ extname: '.min.js' }))
   .pipe(dest('build/js'), { sourcemaps: true })
   .pipe(browserSync.stream())
@@ -70,14 +81,14 @@ function serve() {
        baseDir: "./"
     }
   });
-  watch('images-dev/**', series(images))
-  watch('js-dev/*.js', series(scripts))
+  watch('images/*', series(images))
+  watch('js/*.js', series(scripts))
   watch('scss/*.scss', series(styles))
   watch('*.html').on('change', browserSync.reload)
 }
 
 function images() {
-  return src('images-dev/*', { allowEmpty: true })
+  return src('images/*')
     .pipe(imagemin([
       imagemin.svgo({
         plugins: [
@@ -92,7 +103,7 @@ function images() {
 }
 
 function clean() {
-  return del(['build/']);
+  return del(['build/*']);
 }
 
 exports.serve = serve;
@@ -101,4 +112,4 @@ exports.js = scripts;
 exports.img = images;
 exports.clean = clean;
 exports.sprites = sprites;
-exports.default = series(clean, series(images, parallel(styles, scripts)), serve);
+exports.default = series(clean, images, styles, scripts, serve);
