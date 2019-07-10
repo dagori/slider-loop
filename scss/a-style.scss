@@ -29,8 +29,12 @@ $sliderLength: 8;
   height: $allHeight;
   margin: $marginVertical auto;
   position: relative;
-  overflow: hidden;
+//  overflow: hidden;
+  outline: 3px solid black;
   box-sizing: border-box;
+  * {
+    box-sizing: border-box;
+  }
 }
 
 .slider__button {
@@ -50,8 +54,8 @@ $sliderLength: 8;
 
 .slider__container {
   display: flex;
+  justify-content: flex-start;
   height: inherit;
-  box-sizing: border-box;
   width: $allWidth * $sliderLength;
 }
 
@@ -59,4 +63,7 @@ $sliderLength: 8;
   width: $allWidth;
   text-align: center;
   line-height: $allHeight;
+  font-size: 60px;
+  color: white;
+  font-weight: bold;
 }
