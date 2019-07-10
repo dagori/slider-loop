@@ -1,13 +1,12 @@
 'use strict';
-var slider = document.getElementById('slider');
-var prev = slider.querySelector('.slider__button--prev');
-var next = slider.querySelector('.slider__button--next');
-var container = slider.querySelector('.slider__container');
+const slider = document.getElementById('slider');
+const prev = slider.querySelector('.slider__button--prev');
+const next = slider.querySelector('.slider__button--next');
+const container = slider.querySelector('.slider__container');
 
-var step = parseInt(getComputedStyle(slider).width);
-var shift = 1;
-var pos = 0;
+const step = parseInt(getComputedStyle(slider).width);
 const transition = 'transform .5s linear';
+var pos = 0;
 var length;
 
 function createClone() {
@@ -18,31 +17,27 @@ function createClone() {
   container.insertBefore(nextSlide, container.children[0]);
   container.appendChild(prevSlide);
   length = container.children.length;
-  console.log(length);
 }
 createClone();
 
 function movePrev() {
-  if(!shift) {
-    shift = length - 2;
-    pos = -(shift * step);
+  if(!pos) {
+    pos = -step * (length-2);
     container.style.transition = 'null';
     container.style.transform = `translateX(${pos}px)`;
   }
   requestAnimationFrame(function(){
     requestAnimationFrame(function(){
       container.style.transition = transition;
-      shift--;
-      pos = -(shift * step);
+      pos += step;
       container.style.transform = `translateX(${pos}px)`;
-      console.log(`pos:${pos}, shift:${shift}`);
+      console.log(`pos:${pos}`);
     });
   });
 }
 
 function moveNext() {
-  if(shift === length - 1 || shift > length - 1) {
-    shift = 1;
+  if(pos === -step * (length-1)) {
     pos = -step;
     container.style.transition = 'null';
     container.style.transform = `translateX(${pos}px)`;
@@ -50,10 +45,9 @@ function moveNext() {
   requestAnimationFrame(function(){
     requestAnimationFrame(function(){
       container.style.transition = transition;
-      shift++;
-      pos = -(shift * step);
+      pos -= step;
       container.style.transform = `translateX(${pos}px)`;
-      console.log(`pos:${pos}, shift:${shift}`);
+      console.log(`pos:${pos}`);
     });
   });
 }
@@ -78,7 +72,6 @@ document.addEventListener('visibilitychange', function() {
     resetAutoplay();
   } else {
     pos = -step;
-    shift = 1;
     container.style.transition = '';
     container.style.transform = `translateX(${pos}px)`;
     autoplay();

@@ -66,6 +66,7 @@ function styles() {
 
 function scripts() {
   return src('js/*.js', { sourcemaps: true })
+  .pipe(plumber())
   .pipe(babel({
     presets: ['@babel/env']
   }))
