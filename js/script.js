@@ -37,11 +37,7 @@ function radioMove(e) {
 }
 
 function movePrev() {
-  if(!shift) {
-    shift = radio.length - 1;
-  } else {
-    shift--;
-  }
+  !shift ? shift = radio.length - 1 : shift--;
   if(!pos) {
     pos = -step * (allLength-2);
     container.style.transition = 'null';
@@ -59,11 +55,7 @@ function movePrev() {
 }
 
 function moveNext() {
-  if(shift === radio.length - 1) {
-    shift = 0;
-  } else {
-    shift++;
-  }
+  shift === radio.length - 1 ? shift=0 : shift++;
   if(pos === -step * (allLength-1)) {
     pos = -step;
     container.style.transition = 'null';
