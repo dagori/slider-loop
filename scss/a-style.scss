@@ -22,14 +22,14 @@ $colors: (
 $allWidth: 500px;
 $allHeight: 200px;
 $marginVertical: 20px;
-$sliderLength: 8;
+$sliderLength: 5;
 
 .slider {
   width: $allWidth;
   height: $allHeight;
   margin: $marginVertical auto;
   position: relative;
-  overflow: hidden;
+//  overflow: hidden;
   outline: 3px solid black;
   box-sizing: border-box;
   * {
@@ -66,4 +66,13 @@ $sliderLength: 8;
   font-size: 60px;
   color: white;
   font-weight: bold;
+}
+
+/**********************************/
+.slider__radio {
+  display: flex;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 10px;
 }

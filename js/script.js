@@ -3,11 +3,16 @@ const slider = document.getElementById('slider');
 const prev = slider.querySelector('.slider__button--prev');
 const next = slider.querySelector('.slider__button--next');
 const container = slider.querySelector('.slider__container');
+const radioContainer = slider.querySelector('.slider__radio');
+const radio = slider.getElementsByTagName('input');
 
 const step = parseInt(getComputedStyle(slider).width);
 const transition = 'transform .5s linear';
 var pos = 0;
-var length;
+var shift = 0;
+var allLength;
+var radioArray = Array.from(radio);
+radioArray.forEach(item => item.addEventListener('change', radioMove));
 
 function createClone() {
   pos = -step;
@@ -16,13 +21,29 @@ function createClone() {
   var nextSlide = container.children[container.children.length - 1].cloneNode(true);
   container.insertBefore(nextSlide, container.children[0]);
   container.appendChild(prevSlide);
-  length = container.children.length;
+  allLength = container.children.length;
 }
 createClone();
 
+function radioMove(e) {
+  resetAutoplay();
+  if(this.checked) {
+    shift = radioArray.indexOf(this);
+    pos = (shift+1) * -step;
+    console.log(shift, pos);
+    container.style.transform = `translateX(${pos}px)`;
+  }
+  autoplay();
+}
+
 function movePrev() {
+  if(!shift) {
+    shift = radio.length - 1;
+  } else {
+    shift--;
+  }
   if(!pos) {
-    pos = -step * (length-2);
+    pos = -step * (allLength-2);
     container.style.transition = 'null';
     container.style.transform = `translateX(${pos}px)`;
   }
@@ -30,14 +51,20 @@ function movePrev() {
     requestAnimationFrame(function(){
       container.style.transition = transition;
       pos += step;
+      radio[shift].checked = true;
       container.style.transform = `translateX(${pos}px)`;
-      console.log(`pos:${pos}`);
+      console.log(`pos:${pos}, shift:${shift}`);
     });
   });
 }
 
 function moveNext() {
-  if(pos === -step * (length-1)) {
+  if(shift === radio.length - 1) {
+    shift = 0;
+  } else {
+    shift++;
+  }
+  if(pos === -step * (allLength-1)) {
     pos = -step;
     container.style.transition = 'null';
     container.style.transform = `translateX(${pos}px)`;
@@ -46,8 +73,9 @@ function moveNext() {
     requestAnimationFrame(function(){
       container.style.transition = transition;
       pos -= step;
+      radio[shift].checked = true;
       container.style.transform = `translateX(${pos}px)`;
-      console.log(`pos:${pos}`);
+      console.log(`pos:${pos}, shift:${shift}`);
     });
   });
 }
