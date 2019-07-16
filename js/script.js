@@ -11,8 +11,7 @@ const transition = 'transform .5s linear';
 var pos = 0;
 var shift = 0;
 var allLength;
-var radioArray = Array.from(radio);
-radioArray.forEach(item => item.addEventListener('change', radioMove));
+[].forEach.call(radio, (item => item.addEventListener('change', radioMove)));
 
 function createClone() {
   pos = -step;
@@ -28,7 +27,7 @@ createClone();
 function radioMove(e) {
   resetAutoplay();
   if(this.checked) {
-    shift = radioArray.indexOf(this);
+    shift = radio.indexOf(this);
     pos = (shift+1) * -step;
     console.log(shift, pos);
     container.style.transform = `translateX(${pos}px)`;
@@ -93,7 +92,7 @@ document.addEventListener('visibilitychange', function() {
   } else {
     pos = -step;
     shift = 0;
-    radio[shift].checked = true;    
+    radio[shift].checked = true;
     container.style.transition = '';
     container.style.transform = `translateX(${pos}px)`;
     autoplay();
