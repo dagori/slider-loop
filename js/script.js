@@ -92,6 +92,8 @@ document.addEventListener('visibilitychange', function() {
     resetAutoplay();
   } else {
     pos = -step;
+    shift = 0;
+    radio[shift].checked = true;    
     container.style.transition = '';
     container.style.transform = `translateX(${pos}px)`;
     autoplay();
